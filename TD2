@@ -1,0 +1,97 @@
+import numpy as np
+
+class Polynomial:
+    def __init__(self,coef):
+        self.coefs=coef
+
+    def __str__(self):
+        pol=''
+        for i in range(len(self.coefs)-1,-1,-1):
+            if self.coefs[i]!=0:
+                if i!=0:
+                    if self.coefs[i]==1:
+                        pol+='+X^'+str(i)
+                    elif self.coefs[i]==-1:
+                        pol+='-X^'+str(i)
+                    else:
+                        pol+=str(self.coefs[i])+'*X^'+str(i)
+                else:
+                    pol+='+'+str(self.coefs[i])
+        return pol
+
+    def add(self,other):
+        coef1=self.coefs
+        coef2=other.coefs
+        coef_tot=[]
+        if len(coef1)>=len(coef2):
+            diff=len(coef1)-len(coef2)
+            for k in range(diff):
+                coef2.append(0)
+            for k in range(len(coef1)):
+                coef_tot.append(coef1[k]+coef2[k])
+        else:
+            diff=-len(coef1)+len(coef2)
+            for k in range(diff):
+                coef1.append(0)
+            for k in range(len(coef1)):
+                coef_tot.append(coef1[k]+coef2[k])
+        p_tot=Polynomial(coef_tot)
+        return p_tot
+
+class PolyMod:
+    def __init__(self,coef,q,n):
+        self.coefs=coef
+        self.q=q
+        self.n=n
+
+    def __str__(self):
+        if len(self.coefs)<self.n+1:
+            coef_mod=[]
+            for e in self.coefs:
+                coef_mod.append(e%self.q)
+            print(coef_mod)
+            pol=''
+            for i in range(len(coef_mod)-1,-1,-1):
+                if coef_mod[i]!=0:
+                    print(pol)
+                    if i!=0:
+                        if coef_mod[i]==1:
+                            pol+='+X^'+str(i)
+                        elif coef_mod[i]==-1:
+                            pol+='-X^'+str(i)
+                        else:
+                            pol+='+'+str(coef_mod[i])+'*X^'+str(i)
+                    else:
+                        pol+='+'+str(coef_mod[i])
+            return pol
+        else :
+            diviseur=np.zeros(self.n+1)
+            diviseur[self.n]=1
+            diviseur[0]=1
+            (quotient,reste)=np.polydiv(self.coefs,diviseur)
+            coef_mod=[]
+            for e in reste:
+                coef_mod.append(e%self.q)
+            print(coef_mod)
+            pol=''
+            for i in range(len(coef_mod)-1,-1,-1):
+                if coef_mod[i]!=0:
+                    print(pol)
+                    if i!=0:
+                        if coef_mod[i]==1:
+                            pol+='+X^'+str(i)
+                        elif coef_mod[i]==-1:
+                            pol+='-X^'+str(i)
+                        else:
+                            pol+='+'+str(coef_mod[i])+'*X^'+str(i)
+                    else:
+                        pol+='+'+str(coef_mod[i])
+            return pol
+
+
+
+if __name__ == '__main__':
+    p=PolyMod([1,-1,7,1],6,3)
+    print(p)
+
+
